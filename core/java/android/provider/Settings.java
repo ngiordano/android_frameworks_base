@@ -2920,17 +2920,24 @@ public final class Settings {
         public static final String RECENTS_RAM_BAR_ACTIVE_APPS_COLOR = "recents_ram_bar_active_apps_color";
 
          /**
+         * Expanded desktop mode
+         * 0 = none, 1 = hide only navbar, 2 = hide only statusbar, 3 = hide both
+         * @hide
+         */
+        public static final String EXPANDED_DESKTOP_MODE = "expanded_desktop_mode";
+
+         /**
          * Whether Expanded desktop is currently running or not
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
 
          /**
-         * Expanded desktop mode
-         * 0 = none, 1 = hide only navbar, 2 = hide only statusbar, 3 = hide both
+         * Whether to enable or not pie controls
+         * The value is boolean (1 or 0).
          * @hide
          */
-        public static final String EXPANDED_DESKTOP_MODE = "expanded_desktop_mode";
+        public static final String PIE_CONTROLS = "pie_controls";
 
         /**
          * Whether to use a separate delay for "slide to unlock" and security
