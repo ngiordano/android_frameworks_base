@@ -51,6 +51,12 @@ import java.util.TimeZone;
  * minutes.
  */
 public class Clock extends TextView implements OnClickListener, OnLongClickListener {
+
+   public interface OnClockChangedListener
+    {
+        public abstract void onChange(CharSequence t);
+    }
+
     protected boolean mAttached;
     protected Calendar mCalendar;
     protected String mClockFormatString;
@@ -79,6 +85,17 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     protected int mClockStyle = STYLE_CLOCK_RIGHT;
 
     protected int mClockColor = com.android.internal.R.color.holo_blue_light;
+
+    private OnClockChangedListener clockChangeListener = null;
+    public void setOnClockChangedListener(OnClockChangedListener l)
+    {
+        clockChangeListener = l;
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
 
     private int mAmPmStyle = AM_PM_STYLE_GONE;
     public boolean mShowClock;
@@ -134,10 +151,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         super(context, attrs, defStyle);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
+    public void startBroadcastReceiver() {
         if (!mAttached) {
             mAttached = true;
             IntentFilter filter = new IntentFilter();
@@ -167,6 +181,12 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        startBroadcastReceiver();
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mAttached) {
@@ -193,9 +213,14 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     final void updateClock() {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         setText(getSmallTime());
+        CharSequence seq = getSmallTime();
+        setText(seq);
+        if (clockChangeListener != null) {
+            clockChangeListener.onChange(seq);
+        }
     }
 
-    private final CharSequence getSmallTime() {
+    public final CharSequence getSmallTime() {
         Context context = getContext();
         boolean b24 = DateFormat.is24HourFormat(context);
         int res;
