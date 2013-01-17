@@ -81,17 +81,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     protected int mClockColor = com.android.internal.R.color.holo_blue_light;
 
-    private OnClockChangedListener mClockChangedListener;
-
-    public interface OnClockChangedListener {
-        public abstract void onChange(CharSequence t);
-     }
-
-    class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
     private int mAmPmStyle = AM_PM_STYLE_GONE;
     public boolean mShowClock;
 
@@ -175,10 +164,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         updateSettings();
     }
 
-    public void setOnClockChangedListener(OnClockChangedListener l){
-        mClockChangedListener = l;
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -214,9 +199,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         setText(getSmallTime());
         CharSequence seq = getSmallTime();
         setText(seq);
-        if (mClockChangedListener != null) {
-            mClockChangedListener.onChange(seq);
-        }
     }
 
     public final CharSequence getSmallTime() {
