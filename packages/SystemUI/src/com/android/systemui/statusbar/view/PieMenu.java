@@ -206,6 +206,7 @@ public class PieMenu extends FrameLayout {
         mBatteryBackground.setColor(COLOR_DEFAULT_BATTERY_BACKGROUND);
 
         mStatusPaint = new Paint();
+        mStatusPaint.setAntiAlias(true);
         mStatusPaint.setColor(COLOR_DEFAULT_STATUS);
         mStatusPaint.setStyle(Paint.Style.FILL);
         mStatusPaint.setTextSize(150);
@@ -233,33 +234,13 @@ public class PieMenu extends FrameLayout {
         mContentFrame = (View) mContainer.findViewById(R.id.content_frame);
         mScrollView = (ScrollView) mContainer.findViewById(R.id.notification_scroll);
         mScrollView.setOnTouchListener(new OnTouchListener(){
-
-            final int SCROLLING_DISTANCE_TRIGGER = 100;
-            float scrollY;
-            boolean scrolled;
-
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        scrollY = event.getY();
-                        scrolled = false;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float distance = event.getY() - scrollY;
-                        if(Math.abs(distance) > SCROLLING_DISTANCE_TRIGGER) {
-                            scrolled = true;
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if(!scrolled) {
-                            hideNotificationsPanel();
-                        }
-                        break;
+            public boolean onTouch(View v, MotionEvent event) {         
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    hideNotificationsPanel();
                 }
                 return false;
-            }                               
-        });
+            }});
 
         mLastBackgroundColor = new ColorUtils.ColorSettingInfo();
         mLastGlowColor = new ColorUtils.ColorSettingInfo();
@@ -607,7 +588,7 @@ public class PieMenu extends FrameLayout {
                 // Draw clock
                 if (mStatusPath != null) {
                     mStatusPaint.setColor(COLOR_DEFAULT_STATUS);
-                    mStatusPaint.setTextSize(125);
+                    mStatusPaint.setTextSize(130);
                     mStatusPaint.setAlpha(mTextAlpha);
                     mStatusPaint.setTextScaleX(1.2f);
 
@@ -695,7 +676,7 @@ public class PieMenu extends FrameLayout {
         float x = evt.getX();
         float y = evt.getY();
         int orient = mPanel.getOrientation();
-        int distance = (int)Math.abs(orient == Gravity.TOP || orient == Gravity.BOTTOM ? y : x);
+        int distance = (int)Math.abs(orient == Gravity.TOP || orient == Gravity.BOTTOM ? y : x);    
         int shadeTreshold = getHeight() - mTouchOffset * 10;
         boolean pieTreshold = distance > mTouchOffset && distance < (int)(mRadius + mRadiusInc) * 2.5f;
         final boolean hapticFeedback = Settings.System.getInt(mContext.getContentResolver(),
@@ -750,7 +731,7 @@ public class PieMenu extends FrameLayout {
         } else if (MotionEvent.ACTION_MOVE == action) {
             int treshold = (int)(getHeight() * 0.6f);
             mGlowOffset = distance > treshold ? distance - treshold : 0;
-
+            
             // Trigger the shade?
             if (!mPanelActive && distance > shadeTreshold) {
                 // Give the user a small hint that he's inside the upper touch area
