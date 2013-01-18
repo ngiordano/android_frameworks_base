@@ -155,6 +155,9 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private boolean mDeviceProvisioned = false;
 
+    public void collapse() {
+    }
+
     public NotificationRowLayout getNotificationRowLayout() {
         return mPile;
     }
