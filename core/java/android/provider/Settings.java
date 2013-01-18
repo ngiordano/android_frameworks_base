@@ -2919,25 +2919,32 @@ public final class Settings {
          */
         public static final String RECENTS_RAM_BAR_ACTIVE_APPS_COLOR = "recents_ram_bar_active_apps_color";
 
-         /**
+        /**
          * Expanded desktop mode
          * 0 = none, 1 = hide only navbar, 2 = hide only statusbar, 3 = hide both
          * @hide
          */
         public static final String EXPANDED_DESKTOP_MODE = "expanded_desktop_mode";
 
-         /**
+        /**
          * Whether Expanded desktop is currently running or not
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
 
-         /**
+        /**
          * Whether to enable or not pie controls
          * The value is boolean (1 or 0).
          * @hide
          */
         public static final String PIE_CONTROLS = "pie_controls";
+
+        /**
+         * Whether to enable or not pie per-app-coloring
+         * The value is boolean (1 or 0).
+         * @hide
+         */
+        public static final String PIE_PAC = "pie_pac";
 
         /**
          * Location of the pie in the screen
@@ -2948,6 +2955,16 @@ public final class Settings {
          * @hide
          */
         public static final String PIE_GRAVITY = "pie_gravity";
+
+        /**
+         * Pie status report
+         * 0 = Bare
+         * 1 = Quick
+         * 2 = Default
+         * 3 = Slow
+         * @hide
+         */
+        public static final String PIE_MODE = "pie_mode";
 
         /**
          * Whether to use a separate delay for "slide to unlock" and security
