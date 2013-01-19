@@ -29,6 +29,7 @@ import com.android.systemui.TransparencyManager;
 import com.android.systemui.recent.RecentTasksLoader;
 import com.android.systemui.recent.RecentsActivity;
 import com.android.systemui.recent.TaskDescription;
+import com.android.systemui.statusbar.phone.QuickSettingsContainerView;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.tablet.StatusBarPanel;
 import com.android.systemui.statusbar.WidgetView;
@@ -156,6 +157,11 @@ public abstract class BaseStatusBar extends SystemUI implements
     private boolean mDeviceProvisioned = false;
 
     public void collapse() {
+    }
+
+    public QuickSettingsContainerView getQuickSettingsPanel() {
+        // This method should be overriden
+        return null;
     }
 
     public NotificationRowLayout getNotificationRowLayout() {
