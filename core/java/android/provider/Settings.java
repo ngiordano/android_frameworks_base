@@ -2967,6 +2967,12 @@ public final class Settings {
         public static final String PIE_MODE = "pie_mode";
 
         /**
+         * Pie size fraction
+         * @hide
+         */
+        public static final String PIE_SIZE = "pie_size";
+
+        /**
          * Whether to use a separate delay for "slide to unlock" and security
          * lock
          * @hide
