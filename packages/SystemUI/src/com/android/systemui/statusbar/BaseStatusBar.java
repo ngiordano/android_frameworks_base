@@ -142,6 +142,23 @@ public abstract class BaseStatusBar extends SystemUI implements
     public View mContainer;
     int mIndex;
 
+    // Policy
+    public NetworkController mNetworkController;
+    public BatteryController mBatteryController;
+    public SignalClusterView mSignalCluster;
+    public Clock mClock;
+
+    // left-hand icons 
+    public LinearLayout mStatusIcons;
+
+    // Statusbar view container
+    public ViewGroup mBarView;
+
+    // Color fields
+    private Canvas mCurrentCanvas;
+    private Canvas mNewCanvas;
+    private TransitionDrawable mTransition;
+
     // UI-specific methods
 
     /**
