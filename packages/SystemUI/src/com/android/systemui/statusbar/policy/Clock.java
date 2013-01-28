@@ -51,7 +51,6 @@ import java.util.TimeZone;
  * minutes.
  */
 public class Clock extends TextView implements OnClickListener, OnLongClickListener {
-
     protected boolean mAttached;
     protected Calendar mCalendar;
     protected String mClockFormatString;
@@ -135,7 +134,10 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         super(context, attrs, defStyle);
     }
 
-    public void startBroadcastReceiver() {
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
         if (!mAttached) {
             mAttached = true;
             IntentFilter filter = new IntentFilter();
@@ -165,12 +167,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        startBroadcastReceiver();
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mAttached) {
@@ -196,11 +192,10 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     final void updateClock() {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
-        CharSequence seq = getSmallTime();
-        setText(seq);
+        setText(getSmallTime());
     }
 
-    public final CharSequence getSmallTime() {
+    private final CharSequence getSmallTime() {
         Context context = getContext();
         boolean b24 = DateFormat.is24HourFormat(context);
         int res;
