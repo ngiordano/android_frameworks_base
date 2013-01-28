@@ -196,7 +196,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     final void updateClock() {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
-        setText(getSmallTime());
         CharSequence seq = getSmallTime();
         setText(seq);
     }

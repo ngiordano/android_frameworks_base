@@ -62,6 +62,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.SlidingDrawer.OnDrawerCloseListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.SlidingDrawer.OnDrawerScrollListener;
 
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarNotification;
@@ -128,11 +131,10 @@ public class TabletStatusBar extends BaseStatusBar implements
     int mMenuNavIconWidth = -1;
     private int mMaxNotificationIcons = 5;
 
-    boolean mIsSlidingDrawer = false;
-    static SlidingDrawer mSlider = null;
+     /*boolean mIsSlidingDrawer = false;
     static boolean mAutoHide = false;
     static long mAutoHideTime = 10000;
-    static boolean mIsDrawerOpen = true;
+    static boolean mIsDrawerOpen = true;*/
 
     TabletStatusBarView mStatusBarView;
     View mNotificationArea;
