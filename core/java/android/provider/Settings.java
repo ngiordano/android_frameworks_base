@@ -2966,6 +2966,12 @@ public final class Settings {
         public static final String PIE_SIZE = "pie_size";
 
         /**
+         * The keys also needed colors
+         * @hide
+         */
+        public static final String PIE_KEY_TINT = "pie_key_tint";
+
+        /**
          * Whether to use a separate delay for "slide to unlock" and security
          * lock
          * @hide
