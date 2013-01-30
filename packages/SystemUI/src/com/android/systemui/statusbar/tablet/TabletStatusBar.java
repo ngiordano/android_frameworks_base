@@ -209,8 +209,6 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     private int mNavigationIconHints = 0;
 
-    private int mShowSearchHoldoff = 0;
-
     public Context getContext() { return mContext; }
 
     private Runnable mShowSearchPanel = new Runnable() {
