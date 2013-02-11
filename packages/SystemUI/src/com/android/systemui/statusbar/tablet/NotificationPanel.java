@@ -70,7 +70,6 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
     ViewGroup mContentFrame;
     View mSettingsView;
     Rect mContentArea = new Rect();
-    View mSettingsView;
     ViewGroup mContentParent;
     TabletStatusBar mBar;
     View mClearButton;
@@ -278,9 +277,6 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
 
     public void setNotificationCount(int n) {
         mNotificationCount = n;
-    }
-
-    public void setContentFrameVisible(final boolean showing, boolean animate) {
     }
 
     public void setContentFrameVisible(final boolean showing, boolean animate) {
