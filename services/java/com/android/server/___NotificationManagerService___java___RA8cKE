@@ -1231,7 +1231,7 @@ public class NotificationManagerService extends INotificationManager.Stub
                         soundUri = notification.sound;
                         hasValidSound = (soundUri != null);
                     }
-                }
+      
 
                 if (hasValidSound) {
                     boolean looping = (notification.flags & Notification.FLAG_INSISTENT) != 0;
@@ -1250,7 +1250,7 @@ public class NotificationManagerService extends INotificationManager.Stub
                         try {
                             final IRingtonePlayer player = mAudioService.getRingtonePlayer();
                             if (player != null) {
-                                player.playAsync(uri, user, looping, audioStreamType);
+                                player.playAsync(soundUri, user, looping, audioStreamType);
                             }
                         } catch (RemoteException e) {
                         } finally {
