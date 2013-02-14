@@ -3517,6 +3517,12 @@ public final class Settings {
         public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
 
         /**
+         * If checked hide extra system bar stuff
+         * ie compatmode button and extra ime switcher.
+         */
+        public static final String HIDE_EXTRAS_SYSTEM_BAR = "hide_extras_system_bar";
+
+        /**
          * User configurable flag for determining if NavBar is enabled
          *
          * @hide
@@ -3550,6 +3556,18 @@ public final class Settings {
          * @hide
          */
         public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
+
+        /**
+         *
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_WIDTH_PORT = "navigation_bar_width_port";
+
+        /**
+        *
+        * @hide
+        */
+        public static final String NAVIGATION_BAR_WIDTH_LAND = "navigation_bar_width_land";
 
         /**
          * @hide
