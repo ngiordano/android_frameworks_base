@@ -3171,6 +3171,18 @@ public final class Settings {
         public static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
 
         /**
+         * Whether to enable lockscreen rotation
+         * @hide
+         */
+        public static final String LOCKSCREEN_AUTO_ROTATE = "lockscreen_auto_rotate";
+
+        /**
+         * custom lockscreen text color
+         * @hide
+         */
+        public static final String LOCKSCREEN_CUSTOM_TEXT_COLOR = "lockscreen_custom_text_color";
+
+        /**
          * Boolean value whether to link ringtone and notification volumes
          *
          * @hide
@@ -3437,6 +3449,44 @@ public final class Settings {
          public static final String KEY_ASSIST_ACTION = "key_assist_action";
 
         /**
+         * Whether to show the battery bar
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR = "statusbar_battery_bar";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_COLOR = "statusbar_battery_bar_color";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_THICKNESS = "statusbar_battery_bar_thickness";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_STYLE = "statusbar_battery_bar_style";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_ANIMATE = "statusbar_battery_bar_animate";
+
+        /**
+        * @hide
+        * Style of Battery
+        * 0 - Icon Only
+        * 1 - Text Only
+        * 2 - Icon Text
+        * 3 - Icon Centered Text
+        * 4 - Icon Circle
+        * 5 - Hide
+        */
+        public static final String STATUSBAR_BATTERY_ICON = "statusbar_battery_icon";
+
+        /**
          * Weather to minimize lockscreen challenge on screen turned on
          * @hide
          */
@@ -3462,6 +3512,24 @@ public final class Settings {
           * @hide
           */
          public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
+
+        /**
+         * Circle battery icon color
+         * in statusbar
+         */
+        public static final String STATUS_BAR_CIRCLE_BATTERY_COLOR = "status_bar_circle_battery_color";
+
+        /**
+         * Battery icon text color
+         * in statusbar
+         */
+        public static final String STATUS_BAR_BATTERY_TEXT_COLOR = "status_bar_battery_text_color";
+
+        /**
+         * Circle battery animation speed during charge
+         * in statusbar
+         */
+        public static final String STATUS_BAR_CIRCLE_BATTERY_ANIMATIONSPEED = "status_bar_circle_battery_animationspeed";
 
         /**
          * Control the display of the action overflow button within app UI.
