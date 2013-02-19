@@ -111,8 +111,6 @@ public class TabletStatusBar extends BaseStatusBar implements
     public static final int MSG_CLOSE_NOTIFICATION_PANEL = 1001;
     public static final int MSG_OPEN_NOTIFICATION_PEEK = 1002;
     public static final int MSG_CLOSE_NOTIFICATION_PEEK = 1003;
-    public static final int MSG_TOGGLE_RECENTS_PANEL = 1006;
-    public static final int MSG_OPEN_SETTINGS_PANEL = 1007;
     // 1020-1029 reserved for BaseStatusBar
     public static final int MSG_SHOW_CHROME = 1030;
     public static final int MSG_HIDE_CHROME = 1031;
@@ -669,7 +667,7 @@ public class TabletStatusBar extends BaseStatusBar implements
         mNavBarView.setDisabledFlags(mDisabled);
         mNavBarView.setBar(this);
         mNavBarView.getSearchLight().setOnTouchListener(mHomeSearchActionListener);
-        mSysAction = new SysAction(mContext);
+        mCarbonTarget = new CarbonTarget(mContext);
 
         LayoutTransition lt = new LayoutTransition();
         lt.setDuration(250);
@@ -979,15 +977,6 @@ public class TabletStatusBar extends BaseStatusBar implements
                         mNotificationArea.setVisibility(View.VISIBLE);
                     }
                     break;
-
-                case MSG_TOGGLE_RECENTS_PANEL:
-                    if ((mDisabled & StatusBarManager.DISABLE_EXPAND) == 0) {
-                        int msg = (mRecentsPanel.getVisibility() == View.VISIBLE)
-                            ? MSG_CLOSE_RECENTS_PANEL : MSG_OPEN_RECENTS_PANEL;
-                        mHandler.removeMessages(msg);
-                        mHandler.sendEmptyMessage(msg);
-                    }
-                    break;
                 case MSG_OPEN_INPUT_METHODS_PANEL:
                     if (DEBUG) Slog.d(TAG, "opening input methods panel");
                     if (mInputMethodsPanel != null) mInputMethodsPanel.openPanel();
@@ -1281,7 +1270,7 @@ public class TabletStatusBar extends BaseStatusBar implements
         if (DEBUG) {
             Slog.d(TAG, (showMenu?"showing":"hiding") + " the MENU button");
         }
-        mMenuButton.setVisibility(showMenu ? View.VISIBLE : View.GONE);
+        mNavBarView.setMenuVisibility(showMenu);
 
         // See above re: lights-out policy for legacy apps.
         if (showMenu) setLightsOn(true);
