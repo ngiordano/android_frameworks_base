@@ -20,6 +20,7 @@ import com.android.internal.view.RotationPolicy;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.systemui.R;
 
+import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.BluetoothState;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.RSSIState;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.State;
@@ -98,7 +99,7 @@ import java.util.HashMap;
 /**
  *
  */
-class QuickSettings {
+public class QuickSettings {
     private static final String TAG = "QuickSettings";
     public static final boolean SHOW_IME_TILE = false;
 
@@ -128,6 +129,7 @@ class QuickSettings {
     private static final int FAV_CONTACT_TILE = 21;
    // private static final int BT_TETHER_TILE = 22;
     private static final int SOUND_STATE_TILE = 22;
+    private static final int NAVBAR_HIDE_TILE = 23;
 
     public static final String USER_TOGGLE = "USER";
     public static final String BRIGHTNESS_TOGGLE = "BRIGHTNESS";
@@ -153,6 +155,7 @@ class QuickSettings {
     public static final String LTE_TOGGLE = "LTE";
     public static final String FAV_CONTACT_TOGGLE = "FAVCONTACT";
     public static final String SOUND_STATE_TOGGLE = "SOUNDSTATE";
+    public static final String NAVBAR_HIDE_TOGGLE = "NAVBARHIDE";
 
     private static final String DEFAULT_TOGGLES = "default";
 
@@ -173,7 +176,7 @@ class QuickSettings {
     private WifiManager wifiManager;
     private ConnectivityManager connManager;
     private LocationManager locationManager;
-    private PhoneStatusBar mStatusBarService;
+    private BaseStatusBar mStatusBarService;
     private BluetoothState mBluetoothState;
     private TelephonyManager tm;
     private ConnectivityManager mConnService;
@@ -231,6 +234,7 @@ class QuickSettings {
             toggleMap.put(LTE_TOGGLE, LTE_TILE);
             toggleMap.put(FAV_CONTACT_TOGGLE, FAV_CONTACT_TILE);
             toggleMap.put(SOUND_STATE_TOGGLE, SOUND_STATE_TILE);
+            toggleMap.put(NAVBAR_HIDE_TOGGLE, NAVBAR_HIDE_TILE);
             //toggleMap.put(BT_TETHER_TOGGLE, BT_TETHER_TILE);
         }
         return toggleMap;
@@ -287,15 +291,15 @@ class QuickSettings {
         new SoundObserver(new Handler()).observe();
     }
 
-    void setBar(PanelBar bar) {
+    public void setBar(PanelBar bar) {
         mBar = bar;
     }
 
-    public void setService(PhoneStatusBar phoneStatusBar) {
-        mStatusBarService = phoneStatusBar;
+    public void setService(BaseStatusBar statusBar) {
+        mStatusBarService = statusBar;
     }
 
-    public PhoneStatusBar getService() {
+    public BaseStatusBar getService() {
         return mStatusBarService;
     }
 
@@ -303,7 +307,7 @@ class QuickSettings {
         mModel.onImeWindowStatusChanged(visible);
     }
 
-    void setup(NetworkController networkController, BluetoothController bluetoothController,
+    public void setup(NetworkController networkController, BluetoothController bluetoothController,
             BatteryController batteryController, LocationController locationController) {
         mBluetoothController = bluetoothController;
 
@@ -593,6 +597,45 @@ class QuickSettings {
                     }
                 });
                 break;
+            case NAVBAR_HIDE_TILE:
+                quick = (QuickSettingsTileView)
+                        inflater.inflate(R.layout.quick_settings_tile, parent, false);
+                quick.setContent(R.layout.quick_settings_tile_navbar_hide, inflater);
+                quick.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mBar.collapseAllPanels(true);
+                        boolean enabled = Settings.System.getBoolean(mContext.getContentResolver(),
+                                 Settings.System.NAV_HIDE_ENABLE, false);
+                        Settings.System.putBoolean(mContext.getContentResolver(),
+                                 Settings.System.NAV_HIDE_ENABLE, !enabled);
+                        Settings.System.putBoolean(mContext.getContentResolver(),
+                                 Settings.System.NAVIGATION_BAR_SHOW_NOW, enabled);
+
+                    }
+                });
+                quick.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Intent intent = new Intent("android.intent.action.MAIN");
+                        // gonna make this go to navbar settings at some point
+                        intent.setComponent(ComponentName.
+                                unflattenFromString("com.aokp.romcontrol/.ROMControlActivity"));
+                        intent.addCategory("android.intent.category.LAUNCHER");
+                        startSettingsActivity(intent);
+                        return true;
+                    }
+                });
+                mModel.addNavBarHideTile(quick, new QuickSettingsModel.RefreshCallback() {
+                    @Override
+                    public void refreshView(QuickSettingsTileView view, State state) {
+                        TextView tv = (TextView) view.findViewById(R.id.navbar_hide_textview);
+                        tv.setCompoundDrawablesWithIntrinsicBounds(0, state.iconId, 0, 0);
+                        tv.setText(state.label);
+                        tv.setTextSize(1, mTileTextSize);
+                    }
+                });
+                break;
             case SETTINGS_TILE:
                 quick = (QuickSettingsTileView)
                         inflater.inflate(R.layout.quick_settings_tile, parent, false);
@@ -822,7 +865,6 @@ class QuickSettings {
                     @Override
                     public void onClick(View v) {
                         mCarbonTarget.launchAction(mCarbonTarget.ACTION_TORCH);
-                        mHandler.postDelayed(delayedRefresh, 1000);
                     }
                 });
                 quick.setOnLongClickListener(new View.OnLongClickListener() {
@@ -1645,7 +1687,6 @@ class QuickSettings {
         public void run() {
             mModel.refreshWifiTetherTile();
             mModel.refreshUSBTetherTile();
-            mModel.refreshTorchTile();
         }
     };
 
@@ -1706,6 +1747,12 @@ class QuickSettings {
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.QUICK_TOGGLE_FAV_CONTACT),
                     false, this);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.NAV_HIDE_ENABLE),
+                    false, this);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.TORCH_STATE),
+                    false, this);
             updateSettings();
         }
 
@@ -1728,6 +1775,8 @@ class QuickSettings {
             mModel.refreshVibrateTile();
             mModel.refreshSilentTile();
             mModel.refreshSoundStateTile();
+            mModel.refreshNavBarHideTile();
+            mModel.refreshTorchTile();
         }
 
         @Override
@@ -1735,6 +1784,8 @@ class QuickSettings {
             mModel.refreshVibrateTile();
             mModel.refreshSilentTile();
             mModel.refreshSoundStateTile();
+            mModel.refreshNavBarHideTile();
+            mModel.refreshTorchTile();
         }
     }
 }
