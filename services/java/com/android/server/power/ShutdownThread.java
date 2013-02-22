@@ -131,11 +131,6 @@ public final class ShutdownThread extends Thread {
                 sConfirmDialog.dismiss();
             }
             if (mReboot && !mRebootSafeMode){
-                boolean isPrimary = UserHandle.getCallingUserId() == UserHandle.USER_OWNER;
-                boolean advancedReboot = isPrimary ? advancedRebootEnabled(context) : false;
-                KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-                boolean locked = km.inKeyguardRestrictedInputMode();
-                if (advancedReboot && !locked) {
                 sConfirmDialog = new AlertDialog.Builder(context)
                         .setTitle(com.android.internal.R.string.reboot_system)
                         .setSingleChoiceItems(com.android.internal.R.array.shutdown_reboot_options, 0, new DialogInterface.OnClickListener() {
@@ -194,9 +189,6 @@ public final class ShutdownThread extends Thread {
         } else {
             beginShutdownSequence(context);
         }
-    }
-    private static boolean advancedRebootEnabled(Context context) {
-        return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ADVANCED_REBOOT, 0) == 1;
     }
 
     private static class CloseDialogReceiver extends BroadcastReceiver
