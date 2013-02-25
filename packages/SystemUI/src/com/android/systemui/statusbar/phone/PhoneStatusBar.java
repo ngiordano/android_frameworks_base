@@ -799,6 +799,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
 
         mWifiLabel = (TextView)mStatusBarWindow.findViewById(R.id.wifi_text);
+
+	if (mWifiLabel != null) {
         mNetworkController.addWifiLabelView(mWifiLabel);
 
         mWifiLabel.addTextChangedListener(new TextWatcher() {
@@ -830,6 +832,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                 updateCarrierAndWifiLabelVisibility(false);
             }
         });
+	}
 
         // Set notification background
         setNotificationWallpaperHelper();
@@ -1498,6 +1501,8 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     protected void updateCarrierAndWifiLabelVisibility(boolean force) {
+	if (!mShowCarrierInPanel || mCarrierAndWifiView == null) return;
+
         if (DEBUG) {
             Slog.d(TAG, String.format("pileh=%d scrollh=%d carrierh=%d",
                     mPile.getHeight(), mScrollView.getHeight(), mCarrierAndWifiViewHeight));
